@@ -3,10 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Markdown Parser</title>
   </head>
   <body>
-    <h1>Welcome to My page</h1>
-    <h2>This is logseq public</h2>
+    <script src="/showdown.min.js" lang="Javascript"></script>
+    <div id="content"></div>
+    <script>
+      var converter = new showdown.Converter();
+
+      // Fetch the markdown file content
+      fetch("/markdown/logseqweb.md")
+        .then((response) => response.text())
+        .then((mdContent) => {
+          // Convert markdown content to HTML
+          var html = converter.makeHtml(mdContent);
+          document.getElementById("content").innerHTML = html;
+        })
+        .catch((error) => {
+          console.error("Error fetching markdown:", error);
+        });
+    </script>
   </body>
 </html>
