@@ -1,2 +1,0 @@
-- This is the main website markdown for logseqweb
-- Editing file for website
