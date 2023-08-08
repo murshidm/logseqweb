@@ -1,0 +1,5 @@
+- Remove existing `.DS_Store` files from the repository:
+	- `find . -name .DS_Store -print0 | xargs -0 git rm -f --ignore-unmatch`
+-
+-
+-
