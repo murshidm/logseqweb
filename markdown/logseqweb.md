@@ -3,7 +3,7 @@
 	- Welcome to Murshid's space
 	- [Logseq](https://logseq.com/) is a privacy-first, open-source knowledge base
 		- How to use Logseq?
-			- {{video https://youtu.be/plPdern6Rfc}}
+			- <iframe width="560" height="315" src="https://www.youtube.com/embed/plPdern6Rfc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 - ## Website
 	- https://murshidmuzamil.com/
 - ## Twitter
