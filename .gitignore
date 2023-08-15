@@ -1,2 +1,3 @@
 # ignore the markdown folder as its updated from logseq
 markdown/
+.DS_Store
