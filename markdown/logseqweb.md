@@ -2,8 +2,10 @@
 - ## Intro
 	- Welcome to Murshid's space
 	- [Logseq](https://logseq.com/) is a privacy-first, open-source knowledge base
+		- How to use Logseq?
+			- {{video https://youtu.be/plPdern6Rfc}}
 - ## Website
 	- https://murshidmuzamil.com/
 - ## Twitter
 	- https://twitter.com/murshidmuzamil
-- Updated on [[Aug 15th, 2023]] at 18:45
+- Updated on [[Aug 15th, 2023]] at 21:37
