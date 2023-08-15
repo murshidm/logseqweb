@@ -1,7 +1,7 @@
 # Hello!
 
 - ## Intro
-  - Welcome to Murshid's space
+  - Welcome to Murshid's space.
   - [Logseq](https://logseq.com/) is a privacy-first, open-source knowledge base
 - ## Website
   - https://murshidmuzamil.com/
