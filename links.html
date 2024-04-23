@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="max-age=86400, must-revalidate" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Link Preview Dashboard</title>
     <style>
@@ -23,39 +24,57 @@
         max-width: 1920px;
       }
       .link-container {
-        flex: 1 1 21%; /* Adjusts the number of columns, minimum width ~400px */
+        flex: 0 0 12%; /* Adjusts the number of columns for 8 per row */
         margin: 10px;
         border-radius: 8px;
         overflow: hidden;
         position: relative;
-        height: 250px; /* Fixed height for uniformity */
+        height: 200px; /* Adjusted height for smaller width */
         cursor: pointer;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
       .link-container:hover {
-        transform: scale(1.03);
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        transform: scale(1.05);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
       }
-      .link-title {
+      .link-title,
+      .link-url {
         position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
-        background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-        color: #fff;
         padding: 5px;
-        font-size: 16px;
         text-align: center;
         z-index: 10;
+      }
+      .link-title {
+        top: 0;
+        background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+        color: #fff;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .favicon {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+      }
+      .link-url {
+        bottom: 0;
+        background: rgba(
+          0,
+          100,
+          0,
+          0.7
+        ); /* Green semi-transparent background */
+        color: #eef;
+        font-size: 12px;
       }
       .link-preview {
         width: 100%;
         height: 100%;
         background-size: cover;
         background-position: center;
-      }
-      .no-thumbnail {
-        background-image: url("placeholder.jpg"); /* Placeholder image URL */
       }
     </style>
   </head>
@@ -71,12 +90,9 @@
             data.links.forEach((link) => {
               const linkDiv = document.createElement("div");
               linkDiv.className = "link-container";
-              linkDiv.onclick = function () {
-                window.location.href = link.url;
-              };
 
               fetch(
-                `https://api.allorigins.win/raw?url=${encodeURIComponent(
+                `https://api.allorigins.win/get?url=${encodeURIComponent(
                   link.url
                 )}`
               )
@@ -87,17 +103,24 @@
                     data.contents,
                     "text/html"
                   );
-                  const title = doc.querySelectorAll("title")[0].innerText;
+                  const title = doc.querySelector("title").innerText;
                   const ogImage = doc.querySelector(
                     'meta[property="og:image"]'
                   );
+                  const faviconLink = doc.querySelector(
+                    'link[rel="icon"], link[rel="shortcut icon"]'
+                  );
+                  const favicon = faviconLink
+                    ? faviconLink.href
+                    : "/favicon.ico";
                   const thumbnail = ogImage
                     ? ogImage.content
-                    : "placeholder.jpg";
+                    : "placeholder.jpg"; // Use a placeholder if no og:image
 
                   linkDiv.innerHTML = `
-                            <div class="link-title">${title}</div>
+                            <div class="link-title"><img src="${favicon}" class="favicon" onerror="this.style.display='none'">${title}</div>
                             <div class="link-preview" style="background-image: url('${thumbnail}');"></div>
+                            <div class="link-url">${link.url}</div>
                         `;
                   container.appendChild(linkDiv);
                 })
@@ -105,7 +128,8 @@
                   console.error("Error loading the link:", error);
                   linkDiv.innerHTML = `
                             <div class="link-title">Unavailable</div>
-                            <div class="link-preview no-thumbnail"></div>
+                            <div class="link-preview" style="background-image: url('placeholder.jpg');"></div>
+                            <div class="link-url">No URL</div>
                         `;
                   container.appendChild(linkDiv);
                 });
