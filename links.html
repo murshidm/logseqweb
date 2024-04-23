@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link Preview Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .link-container {
+        margin: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .link-title {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .link-preview {
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My Links</h1>
+    <div id="links"></div>
+
+    <script>
+      // Function to fetch and display links
+      function loadLinks() {
+        fetch("links.json")
+          .then((response) => response.json())
+          .then((data) => {
+            const container = document.getElementById("links");
+            data.links.forEach((link) => {
+              // Create container for each link
+              const linkDiv = document.createElement("div");
+              linkDiv.className = "link-container";
+
+              // Fetch and parse metadata from each URL
+              fetch(
+                `https://api.allorigins.win/get?url=${encodeURIComponent(
+                  link.url
+                )}`
+              )
+                .then((response) => response.json())
+                .then((data) => {
+                  const parser = new DOMParser();
+                  const doc = parser.parseFromString(
+                    data.contents,
+                    "text/html"
+                  );
+                  const title = doc.querySelectorAll("title")[0];
+                  linkDiv.innerHTML = `
+                                    <div class="link-title">${title.innerText}</div>
+                                    <iframe src="${link.url}" class="link-preview" width="100%" height="200px"></iframe>
+                                `;
+                  container.appendChild(linkDiv);
+                })
+                .catch((error) =>
+                  console.error("Error loading the link:", error)
+                );
+            });
+          })
+          .catch((error) => console.error("Error loading the JSON:", error));
+      }
+
+      // Load links when the page loads
+      window.onload = loadLinks;
+    </script>
+  </body>
+</html>
